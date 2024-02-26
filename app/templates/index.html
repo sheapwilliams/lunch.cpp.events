@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Hello, {{ current_user.username }}!</h1>
+<div>
+    <p>
+        Welcome to the lunch order system for C++ Now. Here you can select from a menu of items from local restaurants
+        which we will have delivered each day at lunch time.
+    </p>
+    <p>
+        The cost is {{ "$%.2f"|format(price) }} per day.
+    </p>
+    <p>
+        This price includes all delivery, tax and gratuity to the
+        restaurant.You pay only for the days you order lunch on. You can choose none for a day you do not wish to order.
+    </p>
+    <p>
+        Currently the status web app status is:<br>
+    <ul>
+        <li>None...</li>
+    </ul>
+    </p>
+    We still need to add:
+    <p>
+    <ul>
+        <li>ability to change Order</li>
+        <li>cut off time for orders</li>
+        <li>closing out previous days</li>
+        <li>getting paid :)</li>
+    </ul>
+    </p>
+</div>
+
+<h2>2024 Menu Items</h2>
+{% for item in items %}
+<div>
+    <p>
+        {{ item.date }}</br>
+        {% for opt in item.options %}
+        {{ opt.name }} (<b>{{opt.type}}</b>) - {{opt.desc}}</br>
+        {% endfor %}
+    </p>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='pico.min.css') }}" />
+
+    {% if title %}
+    <title>{{ title }} - Lunch Order</title>
+    {% else %}
+    <title>Welcome to Lunch Order!</title>
+    {% endif %}
+</head>
+
+<body>
+    <header class="container">
+        <div>
+            <img src="{{ url_for('static',filename='cppnow-logo.png') }}" alt="cppnow-logo" align="right" />
+            <a role="button" href="{{ url_for('index') }}">Home</a>
+            <a role="button" href="{{ url_for('order') }}">Order</a>
+            {% if current_user.is_anonymous %}
+            <a role="button" href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a role="button" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+            <a role="button" href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+
+        </div>
+        <br />
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </header>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>
