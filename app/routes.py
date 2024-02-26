@@ -4,11 +4,10 @@ import sqlalchemy as sa
 from app import app, db
 from app.forms import LoginForm, OrderForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Order
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
     return render_template('index.html', title='C++ Now', price=app.config['ORDER_PRICE'], items=app.config['ORDER_OPTIONS'])
 
@@ -39,13 +38,24 @@ def logout():
 
 
 @app.route('/order', methods=['GET','POST'])
+@login_required
 def order():
      form = OrderForm()
      if form.validate_on_submit():
+        order = Order(user_id=current_user.get_id() )
+        order.monday = form.select_monday.data
+        order.tuesday = form.select_tuesday.data
+        order.wednesday = form.select_wednesday.data
+        order.thursday = form.select_thursday.data
+        order.friday = form.select_friday.data
+        db.session.add(order)
+        db.session.commit()
+        flash('Payment processing...' + order.monday + ', ' + order.wednesday + ' - ' + str(order.user_id))
         return redirect(url_for('payment'))
      return render_template('order.html', title="Order", form=form)
 
 @app.route('/payment', methods=['GET', 'POST'])
+@login_required
 def payment():
     return render_template('payment.html', user=user)
 

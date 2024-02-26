@@ -8,10 +8,19 @@
     <p>
         {{form.select_monday.label}}
         {{form.select_monday}}<br>
+        {% for error in form.select_monday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
         {{form.select_tuesday.label}}
         {{form.select_tuesday}}<br>
-        {{form.select_wedday.label}}
-        {{form.select_wedday}}<br>
+        {% for error in form.select_tuesday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{form.select_wednesday.label}}
+        {{form.select_wednesday}}<br>
+        {% for error in form.select_wednesday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
         {{form.select_thursday.label}}
         {{form.select_thursday}}<br>
         {{form.select_friday.label}}

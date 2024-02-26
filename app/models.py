@@ -46,10 +46,12 @@ class Order(db.Model):
     wednesday: so.Mapped[str] = so.mapped_column(sa.String(256), index=False)
     thursday: so.Mapped[str] = so.mapped_column(sa.String(256), index=False)
     friday: so.Mapped[str] = so.mapped_column(sa.String(256), index=False)
-    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True)
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True,  unique=True)
     user: so.Mapped[User] = so.relationship(back_populates='orders')
 
     def __repr__(self) -> str:
-        return '<Order {}-{}-{}>'.format(self.user_id,self.timestamp,self.user)
+        return '<Order id:{} uid:{} m:{} t:{} w:{} t:{} f:{} timestamp:{}>'.format(
+            self.id,self.user_id,self.monday, self.tuesday, self.wednesday, self.thursday, self.friday, self.timestamp
+            )
     
 
