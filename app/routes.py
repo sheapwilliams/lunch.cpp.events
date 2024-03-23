@@ -41,22 +41,32 @@ def logout():
 @login_required
 def order():
      form = OrderForm()
+
      if form.validate_on_submit():
-        order = Order(user_id=current_user.get_id() )
-        order.monday = form.select_monday.data
-        order.tuesday = form.select_tuesday.data
-        order.wednesday = form.select_wednesday.data
-        order.thursday = form.select_thursday.data
-        order.friday = form.select_friday.data
-        db.session.add(order)
+        u = db.session.get(User, current_user.get_id())
+        if u.orders == None:
+            order = Order(user_id=current_user.get_id())
+            order.monday = form.select_monday.data
+            order.tuesday = form.select_tuesday.data
+            order.wednesday = form.select_wednesday.data
+            order.thursday = form.select_thursday.data
+            order.friday = form.select_friday.data
+            db.session.add(order)
+        else:
+            u.orders.monday = form.select_monday.data
+            u.orders.tuesday = form.select_tuesday.data
+            u.orders.wednesday = form.select_wednesday.data
+            u.orders.thursday = form.select_thursday.data
+            u.orders.friday = form.select_friday.data  
         db.session.commit()
-        flash('Payment processing...' + order.monday + ', ' + order.wednesday + ' - ' + str(order.user_id))
+        flash('Payment processing...' + u.orders.monday + ', ' + u.orders.wednesday + ' - user_id: ' + str(u.orders.user_id))
         return redirect(url_for('payment'))
      return render_template('order.html', title="Order", form=form)
 
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
 def payment():
+    user = db.session.get(User, current_user.get_id())
     return render_template('payment.html', user=user)
 
 

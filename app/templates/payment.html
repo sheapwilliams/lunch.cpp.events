@@ -1,16 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section>
+    <div>
+        <h2>Thank you for your order {{ user.username }}</h2>
+    </div>
+</section>
 <table>
-    <tr valign="top">
+    <thead data-theme="light">
+        <th>Day</th>
+        <th>Lunch Order</th>
+    </thead>
+    <tr>
+        <th scope="row">
+            Monday
+        </th>
         <td>
-            <h1>User: {{ user.username }}</h1>
+            {{ user.orders.monday }}
         </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Tuesday
+        </th>
         <td>
-            <h1>You Paid!</h1>
+            {{ user.orders.tuesday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Wednesday
+        </th>
+        <td>
+            {{ user.orders.wednesday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Thursday
+        </th>
+        <td>
+            {{ user.orders.thursday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Friday
+        </th>
+        <td>
+            {{ user.orders.friday }}
         </td>
     </tr>
 </table>
-<hr>
+<section>
+    <div align="center">
+        <h2>You Paid ${{ user.orders.total() }}!</h2>
 
+    </div>
+</section>
 {% endblock %}

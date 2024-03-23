@@ -6,7 +6,7 @@ from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from hashlib import md5
-from app import db, login 
+from app import app, db, login 
 
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
@@ -16,7 +16,7 @@ class User(UserMixin, db.Model):
                                              unique=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    orders: so.WriteOnlyMapped['Order'] = so.relationship( back_populates='user')
+    orders: so.Mapped['Order'] = so.relationship( back_populates='user')
 
     def __repr__(self) -> str:
         return '<User {}>'.format(self.username)
@@ -54,4 +54,25 @@ class Order(db.Model):
             self.id,self.user_id,self.monday, self.tuesday, self.wednesday, self.thursday, self.friday, self.timestamp
             )
     
+    def total(self) -> float:
+        total = 0;
+        if self.monday != "None (N)":
+            total += app.config['ORDER_PRICE']
+        if self.tuesday != "None (N)":
+            total += app.config['ORDER_PRICE']
+        if self.wednesday != "None (N)":
+            total += app.config['ORDER_PRICE']
+        if self.thursday != "None (N)":
+            total += app.config['ORDER_PRICE']
+        if self.friday != "None (N)":
+            total += app.config['ORDER_PRICE']
+        return total
+    
+def load_order(user_id):
+    oq = sa.select(Order).where(Order.user_id==user_id)
+    order = db.session.scalars(oq).first()
+    if order == None:
+        return Order(user_id)
+
+    return Order(order)
 

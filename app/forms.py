@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.form import _Auto
 from wtforms import StringField, PasswordField, BooleanField, RadioField, SelectField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 import sqlalchemy as sa
@@ -36,6 +37,14 @@ class OrderForm(FlaskForm):
     order_options = app.config['ORDER_OPTIONS']
     order_options_count = len(order_options)
 
+    def selected_order_item(self, option, name) -> int:
+        sel = 1
+        for it in app.config['ORDER_OPTIONS'][option]['options']:
+            if name ==  "{} ({})".format(it['name'], it['type']):
+                return sel
+            sel = sel + 1
+        return 1 #
+
     def format_order_items(option):
         item_list = []
         # app.config['ORDER_OPTIONS'][1]['options'][0]['name']
@@ -54,5 +63,5 @@ class OrderForm(FlaskForm):
     select_wednesday = SelectField(format_order_date(2),choices=format_order_items(2), default=1)
     select_thursday = SelectField(format_order_date(3),choices=format_order_items(3), default=1)
     select_friday = SelectField(format_order_date(4),choices=format_order_items(4), default=1)
-    
+
     submit = SubmitField('Order Now')
