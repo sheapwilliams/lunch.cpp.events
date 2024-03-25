@@ -78,3 +78,20 @@ This table will have one line per order
 ### Notes
 https://picocss.com/docs
 
+
+### Email
+#### Incoming Server Settings (IMAP)
+mail.privateemail.com
+993
+support@cpp.events
+SSL/TLS
+Your account password
+
+#### Outgoing Server Settings
+These are in the .env file...
+MAIL_SERVER=mail.privateemail.com
+MAIL_PORT=587
+MAIL_USE_TLS=1
+MAIL_USERNAME=support@cpp.events
+MAIL_PASSWORD=<replace with pw>
+

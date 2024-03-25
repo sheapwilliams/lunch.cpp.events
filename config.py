@@ -6,6 +6,15 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'SavingAspenLunchesIn2024'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'lunch.db')
+    
+    MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'mail.privateemail.com'
+    MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') or True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'support@cpp.events'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or ''
+    ADMINS = ['support@cpp.events']
+    
+    # -------- app lunch config -------
     ORDER_PRICE = 30.00
     ORDER_OPTIONS = [
         {

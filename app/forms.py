@@ -4,7 +4,7 @@ from wtforms import StringField, PasswordField, BooleanField, RadioField, Select
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 import sqlalchemy as sa
 from app import app, db
-from app.models import User
+from app.models import User, Order
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -34,10 +34,11 @@ class RegistrationForm(FlaskForm):
 
 
 class OrderForm(FlaskForm):
+    orders = Order()
     order_options = app.config['ORDER_OPTIONS']
     order_options_count = len(order_options)
 
-    def selected_order_item(self, option, name) -> int:
+    def selected_order_item(option, name):
         sel = 1
         for it in app.config['ORDER_OPTIONS'][option]['options']:
             if name ==  "{} ({})".format(it['name'], it['type']):
@@ -58,10 +59,23 @@ class OrderForm(FlaskForm):
     def format_order_date(option):
         return app.config['ORDER_OPTIONS'][option]['date'];
 
-    select_monday = SelectField(format_order_date(0),choices=format_order_items(0), default=1)
+
+    select_monday = SelectField(format_order_date(0),choices=format_order_items(0), 
+                                default=selected_order_item(0, orders.monday))
     select_tuesday = SelectField(format_order_date(1),choices=format_order_items(1), default=1)
     select_wednesday = SelectField(format_order_date(2),choices=format_order_items(2), default=1)
     select_thursday = SelectField(format_order_date(3),choices=format_order_items(3), default=1)
     select_friday = SelectField(format_order_date(4),choices=format_order_items(4), default=1)
 
     submit = SubmitField('Order Now')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')
