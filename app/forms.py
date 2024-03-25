@@ -69,6 +69,9 @@ class OrderForm(FlaskForm):
 
     submit = SubmitField('Order Now')
 
+class PaymentForm(FlaskForm):
+    card = StringField('Card Details')
+    submit = SubmitField('Process')
 
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])

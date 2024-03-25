@@ -1,0 +1,17 @@
+Dear {{ user.username }},
+
+Thank you for ordering your lunch at C++ Now!
+
+Lunch will be delivered at X:XX time each day.  
+
+{{ user.orders.monday }}
+{{ user.orders.tuesday }}
+{{ user.orders.wednesday }}
+{{ user.orders.thursday }}
+{{ user.orders.friday }}
+
+If you have questions please let us know.
+
+Sincerely,
+
+C++ Now Lunch Menu 

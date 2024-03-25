@@ -1,12 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request
-from urllib.parse import urlsplit
-import sqlalchemy as sa
-from app import app, db
-from app.forms import LoginForm, OrderForm, RegistrationForm, ResetPasswordForm
 from flask_login import current_user, login_user, logout_user, login_required
+import sqlalchemy as sa
+from urllib.parse import urlsplit
+from app import app, db
+from app.forms import LoginForm, OrderForm, PaymentForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
 from app.models import User, Order
-from app.forms import ResetPasswordRequestForm
-from app.email import send_password_reset_email
+from app.email import send_password_reset_email, send_order_email
 
 
 @app.route('/')
@@ -69,8 +68,18 @@ def order():
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
 def payment():
+    form = PaymentForm()
     user = db.session.get(User, current_user.get_id())
-    return render_template('payment.html', user=user)
+    if not user:
+        return redirect(url_for('index'))
+    
+    if form.validate_on_submit():
+        flash('processing!')
+        if user:
+            send_order_email(user)
+            # this will be a complete page...
+            return redirect(url_for('login'))
+    return render_template('payment.html', title='Order Payment', form=form, user=user)
 
 
 @app.route('/register', methods=['GET', 'POST'])

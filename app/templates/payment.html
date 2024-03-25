@@ -55,7 +55,17 @@
 <section>
     <div align="center">
         <h2>You Paid ${{ user.orders.total() }}!</h2>
-
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.card.label }}<br>
+                {{ form.card(size=64) }}<br>
+                {% for error in form.card.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
     </div>
 </section>
 {% endblock %}
