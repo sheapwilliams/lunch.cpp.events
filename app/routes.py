@@ -61,7 +61,7 @@ def order():
             u.orders.thursday = form.select_thursday.data
             u.orders.friday = form.select_friday.data  
         db.session.commit()
-        flash('Payment processing...' + u.orders.monday + ', ' + u.orders.wednesday + ' - user_id: ' + str(u.orders.user_id))
+        #flash('Payment processing...' + u.orders.monday + ', ' + u.orders.wednesday + ' - user_id: ' + str(u.orders.user_id))
         return redirect(url_for('payment'))
      
      if u.orders != None:
@@ -70,7 +70,7 @@ def order():
          form.select_wednesday.data = u.orders.wednesday
          form.select_thursday.data = u.orders.thursday
          form.select_friday.data = u.orders.friday
-         
+
      return render_template('order.html', title="Order", form=form)
 
 @app.route('/payment', methods=['GET', 'POST'])
@@ -146,3 +146,13 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+
+@app.route('/order/success')
+def success():
+    return render_template('success.html')
+
+
+@app.route('/order/cancel')
+def cancel():
+    return render_template('cancel.html')

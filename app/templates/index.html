@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if current_user.is_authenticated %}
 <h1>Hello, {{ current_user.username }}!</h1>
+{% else %}
+<h1>Hello!</h1>
+{% endif %}
 <div>
     <p>
         Welcome to the lunch order system for C++ Now. Here you can select from a menu of items from local restaurants
