@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 import logging
+import stripe
 from logging.handlers import SMTPHandler
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ migrate = Migrate(app, db,render_as_batch=True)
 login = LoginManager(app)
 login.login_view = 'login'
 mail = Mail(app)
+stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
 
 if not app.debug:

@@ -5,6 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
+    SERVER_DOMAIN = os.environ.get('SERVER_DOMAIN') or 'lunch.cpp.events'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'SavingAspenLunchesIn2024'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'lunch.db')
@@ -15,6 +16,9 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'support@cpp.events'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or ''
     ADMINS = ['support@cpp.events']
+
+    STRIPE_SECRET_KEY = os.environ["STRIPE_SECRET_KEY"] or ''
+    STRIPE_PUBLISHABLE_KEY = os.environ["STRIPE_PUBLISHABLE_KEY"] or ''
     
     # -------- app lunch config -------
     ORDER_PRICE = 30.00

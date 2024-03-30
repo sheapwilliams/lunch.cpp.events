@@ -84,6 +84,20 @@ class Order(db.Model):
             total += app.config['ORDER_PRICE']
         return total
     
+    def totalDays(self) -> float:
+        total = 0;
+        if self.monday != "None (N)":
+            total += 1
+        if self.tuesday != "None (N)":
+            total += 1
+        if self.wednesday != "None (N)":
+            total += 1
+        if self.thursday != "None (N)":
+            total += 1
+        if self.friday != "None (N)":
+            total += 1
+        return total  
+    
 def load_order(user_id):
     oq = sa.select(Order).where(Order.user_id==user_id)
     order = db.session.scalars(oq).first()

@@ -1,6 +1,7 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, jsonify, request
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
+import stripe
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import LoginForm, OrderForm, PaymentForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
@@ -73,6 +74,34 @@ def order():
 
      return render_template('order.html', title="Order", form=form)
 
+
+YOUR_DOMAIN = 'http://192.168.0.20:5001'
+@app.route('/create-checkout-session', methods=['GET','POST'])
+@login_required
+def create_checkout_session():
+    user = db.session.get(User, current_user.get_id())
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price': 'price_1OzSA8LBbTglYvMbQRU47oPX',
+                    'quantity': user.orders.totalDays(),
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success',
+            cancel_url=YOUR_DOMAIN + '/cancel',
+            #success_url=app.config['SERVER_DOMAIN'] + '/success',
+            #cancel_url=app.config['SERVER_DOMAIN'] + '/cancel',
+            automatic_tax={'enabled': False},
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
+
+
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
 def payment():
@@ -83,10 +112,12 @@ def payment():
     
     if form.validate_on_submit():
         flash('processing!')
-        if user:
-            send_order_email(user)
+    
+        return redirect(url_for('create_checkout_session'))
+      #  if user:
+      #      send_order_email(user)
             # this will be a complete page...
-            return redirect(url_for('login'))
+     #       return redirect(url_for('login'))
     return render_template('payment.html', title='Order Payment', form=form, user=user)
 
 
@@ -148,11 +179,15 @@ def reset_password(token):
     return render_template('reset_password.html', form=form)
 
 
-@app.route('/order/success')
+@app.route('/success')
+@login_required
 def success():
+    user = db.session.get(User, current_user.get_id())
+    if user:
+        send_order_email(user)
     return render_template('success.html')
 
 
-@app.route('/order/cancel')
+@app.route('/cancel')
 def cancel():
     return render_template('cancel.html')
