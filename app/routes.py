@@ -75,7 +75,7 @@ def order():
      return render_template('order.html', title="Order", form=form)
 
 
-YOUR_DOMAIN = 'http://192.168.0.20:5001'
+#YOUR_DOMAIN = 'http://192.168.0.20:5001'
 @app.route('/create-checkout-session', methods=['GET','POST'])
 @login_required
 def create_checkout_session():
@@ -90,10 +90,10 @@ def create_checkout_session():
                 },
             ],
             mode='payment',
-            success_url=YOUR_DOMAIN + '/success',
-            cancel_url=YOUR_DOMAIN + '/cancel',
-            #success_url=app.config['SERVER_DOMAIN'] + '/success',
-            #cancel_url=app.config['SERVER_DOMAIN'] + '/cancel',
+            #success_url=YOUR_DOMAIN + '/success',
+            #cancel_url=YOUR_DOMAIN + '/cancel',
+            success_url=app.config['SERVER_DOMAIN'] + '/success',
+            cancel_url=app.config['SERVER_DOMAIN'] + '/cancel',
             automatic_tax={'enabled': False},
         )
     except Exception as e:
