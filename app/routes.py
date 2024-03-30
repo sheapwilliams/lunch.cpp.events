@@ -185,7 +185,7 @@ def success():
     user = db.session.get(User, current_user.get_id())
     if user:
         send_order_email(user)
-    return render_template('success.html')
+    return render_template('success.html', title='Successfully Purchased', user=user)
 
 
 @app.route('/cancel')

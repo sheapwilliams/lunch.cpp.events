@@ -1,7 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Stripe and Flask Demo</h1>
-<p>Thank you for your order!</p>
-<p><a href="{{ url_for('index') }}">Home</a></p>
+<h1>You're having lunch at C++ Now! {{ user.username }}</h1>
+<section>
+    <div>
+        <h2>Thank you for your order: </h2>
+    </div>
+</section>
+<table>
+    <thead data-theme="light">
+        <th>Day</th>
+        <th>Lunch Order</th>
+    </thead>
+    <tr>
+        <th scope="row">
+            Monday
+        </th>
+        <td>
+            {{ user.orders.monday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Tuesday
+        </th>
+        <td>
+            {{ user.orders.tuesday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Wednesday
+        </th>
+        <td>
+            {{ user.orders.wednesday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Thursday
+        </th>
+        <td>
+            {{ user.orders.thursday }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Friday
+        </th>
+        <td>
+            {{ user.orders.friday }}
+        </td>
+    </tr>
+</table>
 {% endblock %}
