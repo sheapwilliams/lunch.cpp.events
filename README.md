@@ -4,15 +4,30 @@ A system to manage for attendee's to order lunches during the week to be handed 
 It would be nice to make this more generic in the future.  Its being generated initially for its primary use case of pre-ordering a weeks worth of lunches.  Its hacky -- I know :)  Its my first python app, be gentle.
 
 ## Requirements
-- List of days which need lunch orders
-- Each day a drop down of the menu items available.
-    - None option if no lunch is wanted.
-- Order button to complete order.
-    - When order button clicked - total up $price per day by total days with items selected.
-        - Ignore days which None is set.
-- Confirmation Page - confirming order total cost and items per day (email as well).
-    - Redirect to payment provider.
-        - Account for fees.
+- List of days which need lunch orders - done
+- Each day a drop down of the menu items available. - done
+    - None option if no lunch is wanted. - done
+- Order button to complete order. - done
+    - When order button clicked - total up $price per day by total days with items selected. - done
+        - Ignore days which None is set. - done
+- Confirmation Page - confirming order total cost and items per day (email as well). - done
+    - Redirect to payment provider. - done
+        - Account for fees. - done
+- Order
+    - Add order - done
+        - user adds 2 days - done 
+        - totalPaid set to 60 - done
+    - Edit order - remove
+        - Tries to remove one item
+            - note - must email for refunds.
+        - Tries to add item(s)
+            - get new total
+            - charge differences
+                - on success
+                    - update total paid
+                - on failure - backout
+    - Past date at 9am MST - disable.
+
     
 
 ## Design Notes
@@ -58,6 +73,8 @@ This table will maintain for each user their total weekly order set.
 | Field         |  Type         |
 |---------------|---------------|
 | id            | int           |
+| status        | varchar(256)  |
+| totalPaid     | int           |
 | timestamp     | varchar(64)   |
 | monday        | varchar(256)  |
 | tuesday       | varchar(256)  |

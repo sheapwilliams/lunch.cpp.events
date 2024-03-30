@@ -54,6 +54,7 @@ def order():
             order.wednesday = form.select_wednesday.data
             order.thursday = form.select_thursday.data
             order.friday = form.select_friday.data
+            order.success = ""
             db.session.add(order)
         else:
             u.orders.monday = form.select_monday.data
@@ -85,11 +86,11 @@ def create_checkout_session():
                 {
                     # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
                     'price': 'price_1OzSA8LBbTglYvMbQRU47oPX',
-                    'quantity': user.orders.totalDays(),
+                    'quantity': user.orders.totalDaysDiff(),
                 },
             ],
             mode='payment',
-            success_url=app.config['SERVER_DOMAIN'] + '/success',
+            success_url=app.config['SERVER_DOMAIN'] + '/success?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=app.config['SERVER_DOMAIN'] + '/cancel',
             automatic_tax={'enabled': False},
         )
@@ -172,13 +173,23 @@ def reset_password(token):
     return render_template('reset_password.html', form=form)
 
 
-@app.route('/success')
+@app.route('/success', methods=['GET'])
 @login_required
 def success():
+    session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+    #if session is not None:
+    #    customer = stripe.Customer.retrieve(session.customer)
+
     user = db.session.get(User, current_user.get_id())
     if user:
+        paid = session.amount_total / 100
+        user.orders.total_paid += paid
+        user.orders.success = "Paid!"
         send_order_email(user)
-    return render_template('success.html', title='Successfully Purchased', user=user)
+
+    db.session.commit()
+
+    return render_template('success.html', title='Successfully Purchased', user=user, session=session)
 
 
 @app.route('/cancel')

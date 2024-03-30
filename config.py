@@ -21,7 +21,7 @@ class Config:
     STRIPE_PUBLISHABLE_KEY = os.environ["STRIPE_PUBLISHABLE_KEY"] or ''
     
     # -------- app lunch config -------
-    ORDER_PRICE = 30.00
+    ORDER_PRICE = 30
     ORDER_OPTIONS = [
         {
             "date": "4/29/24 - Monday",

@@ -57,6 +57,8 @@ class Order(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     timestamp: so.Mapped[datetime] = so.mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc))
+    success: so.Mapped[str] = so.mapped_column(sa.String(256))
+    total_paid: so.Mapped[int] = so.mapped_column(default=0)
     monday: so.Mapped[str] = so.mapped_column(sa.String(256), index=False)
     tuesday: so.Mapped[str] = so.mapped_column(sa.String(256), index=False)
     wednesday: so.Mapped[str] = so.mapped_column(sa.String(256), index=False)
@@ -70,7 +72,7 @@ class Order(db.Model):
             self.id,self.user_id,self.monday, self.tuesday, self.wednesday, self.thursday, self.friday, self.timestamp
             )
     
-    def total(self) -> float:
+    def total(self) -> int:
         total = 0;
         if self.monday != "None (N)":
             total += app.config['ORDER_PRICE']
@@ -84,7 +86,7 @@ class Order(db.Model):
             total += app.config['ORDER_PRICE']
         return total
     
-    def totalDays(self) -> float:
+    def totalDays(self) -> int:
         total = 0;
         if self.monday != "None (N)":
             total += 1
@@ -97,6 +99,14 @@ class Order(db.Model):
         if self.friday != "None (N)":
             total += 1
         return total  
+    
+    def chargeDiff(self) -> int:
+        return self.total() - self.total_paid
+    
+    def totalDaysDiff(self) -> int:
+        days = int((self.total() - self.total_paid)/app.config['ORDER_PRICE'])
+        return days
+
     
 def load_order(user_id):
     oq = sa.select(Order).where(Order.user_id==user_id)
