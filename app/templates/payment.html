@@ -54,7 +54,7 @@
 </table>
 <section>
     <div align="center">
-        <h2>Total Due: ${{ user.orders.total() }}!</h2>
+        <h2>Total Due: ${{ '%0.2f'|format(user.orders.total()|float) }}!</h2>
         <form action="/create-checkout-session" method="POST">
             <button type="submit" id="checkout-button">Checkout</button>
         </form>

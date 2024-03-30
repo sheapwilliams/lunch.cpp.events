@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>You're having lunch at C++ Now! {{ user.username }}</h1>
+<h1>You're having lunch at C++ Now!</h1>
 <section>
     <div>
         <h2>Thank you for your order: </h2>
@@ -53,4 +53,10 @@
         </td>
     </tr>
 </table>
+<p>
+    A copy of your order has been emailed to: <b>{{user.email}}</b>
+</p>
+<p>
+    Email <a href="mailto:lunch@cpp.events">lunch@cpp.events</a>
+</p>
 {% endblock %}

@@ -2,13 +2,13 @@ Dear {{ user.username }},
 
 Thank you for ordering your lunch at C++ Now!
 
-Lunch will be delivered at X:XX time each day.  
+Lunch will be delivered at 12:45 time each day.  
 
-{{ user.orders.monday }}
-{{ user.orders.tuesday }}
-{{ user.orders.wednesday }}
-{{ user.orders.thursday }}
-{{ user.orders.friday }}
+Monday: {{ user.orders.monday }}
+Tuesday: {{ user.orders.tuesday }}
+Wednesday: {{ user.orders.wednesday }}
+Thursday: {{ user.orders.thursday }}
+Friday: {{ user.orders.friday }}
 
 If you have questions please let us know.
 
