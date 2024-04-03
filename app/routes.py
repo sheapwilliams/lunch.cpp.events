@@ -1,11 +1,11 @@
-from flask import render_template, flash, redirect, url_for, jsonify, request
+from flask import render_template, flash, redirect, url_for, jsonify, request, session
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 import stripe
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import LoginForm, OrderForm, PaymentForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
-from app.models import User, Order
+from app.models import User, Order, session_order_total, session_order_total_days, session_order_charge_diff, session_order_total_days_diff
 from app.email import send_password_reset_email, send_order_email
 
 
@@ -55,14 +55,25 @@ def order():
             order.thursday = form.select_thursday.data
             order.friday = form.select_friday.data
             order.success = ""
+            order.total_paid = 0
             db.session.add(order)
+            db.session.commit()
         else:
             u.orders.monday = form.select_monday.data
             u.orders.tuesday = form.select_tuesday.data
             u.orders.wednesday = form.select_wednesday.data
             u.orders.thursday = form.select_thursday.data
-            u.orders.friday = form.select_friday.data  
-        db.session.commit()
+            u.orders.friday = form.select_friday.data
+            session['order']  = dict(
+                monday = form.select_monday.data,
+                tuesday = form.select_tuesday.data,
+                wednesday = form.select_wednesday.data,
+                thursday = form.select_thursday.data,
+                friday = form.select_friday.data,
+                total_paid = u.orders.total_paid
+            )
+            
+        #db.session.commit()
         #flash('Payment processing...' + u.orders.monday + ', ' + u.orders.wednesday + ' - user_id: ' + str(u.orders.user_id))
         return redirect(url_for('payment'))
      
@@ -76,17 +87,37 @@ def order():
      return render_template('order.html', title="Order", form=form)
 
 
+@app.route('/payment', methods=['GET', 'POST'])
+@login_required
+def payment():
+    form = PaymentForm()
+    user = db.session.get(User, current_user.get_id())
+    so =  session['order']
+    if not user:
+        return redirect(url_for('index'))
+    
+    if form.validate_on_submit():
+        flash('processing!')
+        return redirect(url_for('create_checkout_session'))
+
+    return render_template('payment.html', title='Order Payment', form=form, user=user, so=so,
+                           session_order_total=session_order_total, session_order_total_days=session_order_total_days,
+                           session_order_charge_diff=session_order_charge_diff,
+                           session_order_total_days_diff=session_order_total_days_diff)
+
+
 @app.route('/create-checkout-session', methods=['GET','POST'])
 @login_required
 def create_checkout_session():
-    user = db.session.get(User, current_user.get_id())
+    #user = db.session.get(User, current_user.get_id())
+    so = session['order']
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
                 {
                     # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
                     'price': 'price_1OzSA8LBbTglYvMbQRU47oPX',
-                    'quantity': user.orders.totalDaysDiff(),
+                    'quantity': session_order_total_days_diff(so),
                 },
             ],
             mode='payment',
@@ -100,19 +131,31 @@ def create_checkout_session():
     return redirect(checkout_session.url, code=303)
 
 
-@app.route('/payment', methods=['GET', 'POST'])
+@app.route('/success', methods=['GET'])
 @login_required
-def payment():
-    form = PaymentForm()
-    user = db.session.get(User, current_user.get_id())
-    if not user:
-        return redirect(url_for('index'))
-    
-    if form.validate_on_submit():
-        flash('processing!')
-        return redirect(url_for('create_checkout_session'))
+def success():
+    session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+    #if session is not None:
+    #    customer = stripe.Customer.retrieve(session.customer)
 
-    return render_template('payment.html', title='Order Payment', form=form, user=user)
+    user = db.session.get(User, current_user.get_id())
+    so = session['order']
+    if user:
+        paid = session.amount_total / 100 
+        user.orders.total_paid += paid
+        user.orders.success = "Paid!"
+        send_order_email(user)
+
+    db.session.commit()
+
+    return render_template('success.html', title='Successfully Purchased', user=user, session=session)
+
+
+@app.route('/cancel')
+def cancel():
+    return render_template('cancel.html')
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -172,26 +215,3 @@ def reset_password(token):
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 
-
-@app.route('/success', methods=['GET'])
-@login_required
-def success():
-    session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
-    #if session is not None:
-    #    customer = stripe.Customer.retrieve(session.customer)
-
-    user = db.session.get(User, current_user.get_id())
-    if user:
-        paid = session.amount_total / 100
-        user.orders.total_paid += paid
-        user.orders.success = "Paid!"
-        send_order_email(user)
-
-    db.session.commit()
-
-    return render_template('success.html', title='Successfully Purchased', user=user, session=session)
-
-
-@app.route('/cancel')
-def cancel():
-    return render_template('cancel.html')

@@ -67,6 +67,8 @@ class Order(db.Model):
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True,  unique=True)
     user: so.Mapped[User] = so.relationship(back_populates='orders')
 
+    monday_t = ""
+
     def __repr__(self) -> str:
         return '<Order id:{} uid:{} m:{} t:{} w:{} t:{} f:{} timestamp:{}>'.format(
             self.id,self.user_id,self.monday, self.tuesday, self.wednesday, self.thursday, self.friday, self.timestamp
@@ -107,12 +109,41 @@ class Order(db.Model):
         days = int((self.total() - self.total_paid)/app.config['ORDER_PRICE'])
         return days
 
-    
-def load_order(user_id):
-    oq = sa.select(Order).where(Order.user_id==user_id)
-    order = db.session.scalars(oq).first()
-    if order == None:
-        return Order(user_id)
 
-    return Order(order)
 
+# Session Helpers
+#---------------------------------------------------------------------------------
+def session_order_total(order) -> int:
+    total = 0;
+    if order['monday'] != "None (N)":
+        total += app.config['ORDER_PRICE']
+    if order['tuesday'] != "None (N)":
+        total += app.config['ORDER_PRICE']
+    if order['wednesday'] != "None (N)":
+        total += app.config['ORDER_PRICE']
+    if order['thursday'] != "None (N)":
+        total += app.config['ORDER_PRICE']
+    if order['friday'] != "None (N)":
+        total += app.config['ORDER_PRICE']
+    return total
+
+def session_order_total_days(order) -> int:
+    total = 0;
+    if order['monday'] != "None (N)":
+        total += 1
+    if order['tuesday'] != "None (N)":
+        total += 1
+    if order['wednesday'] != "None (N)":
+        total += 1
+    if order['thursday'] != "None (N)":
+        total += 1
+    if order['friday'] != "None (N)":
+        total += 1
+    return total  
+
+def session_order_charge_diff(order) -> int:
+    return session_order_total(order) - order['total_paid']
+
+def session_order_total_days_diff(order) -> int:
+    days = int((session_order_total(order) - order['total_paid'])/app.config['ORDER_PRICE'])
+    return days

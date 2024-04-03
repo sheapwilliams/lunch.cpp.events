@@ -17,8 +17,8 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or ''
     ADMINS = ['support@cpp.events']
 
-    STRIPE_SECRET_KEY = os.environ["STRIPE_SECRET_KEY"] or ''
-    STRIPE_PUBLISHABLE_KEY = os.environ["STRIPE_PUBLISHABLE_KEY"] or ''
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY') or ''
+    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY') or ''
     
     # -------- app lunch config -------
     ORDER_PRICE = 30
