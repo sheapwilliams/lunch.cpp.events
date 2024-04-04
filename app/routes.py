@@ -46,8 +46,15 @@ def order():
      form = OrderForm()
      u = db.session.get(User, current_user.get_id())
      sess = db.session.get(Session, current_user.get_id())
+
+     if u.orders == None:
+        tp = 0
+     else:
+        tp = u.orders.total_paid
     
      if form.validate_on_submit():
+
+
         if sess == None:
             sess = Session(user_id=current_user.get_id(),
                 monday = form.select_monday.data,
@@ -55,7 +62,7 @@ def order():
                 wednesday = form.select_wednesday.data,
                 thursday = form.select_thursday.data,
                 friday = form.select_friday.data,
-                total_paid = u.orders.total_paid
+                total_paid = tp
                 )
             db.session.add(sess)
         else:
@@ -130,7 +137,7 @@ def success():
     if user:
         paid = session.amount_total / 100
 
-        if u.orders == None:
+        if user.orders == None:
             order = Order(user_id=current_user.get_id())
             order.monday = so.monday
             order.tuesday = so.tuesday
@@ -160,9 +167,10 @@ def success():
 
 @app.route('/cancel')
 def cancel():
+    so = db.session.get(Session, current_user.get_id())
+    db.session.delete(so)
+    db.session.commit()
     return render_template('cancel.html')
-
-
 
 
 @app.route('/register', methods=['GET', 'POST'])

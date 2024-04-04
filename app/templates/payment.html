@@ -4,7 +4,7 @@
 <section>
     <div>
         <h2>Thank you for your order {{ user.username }}</h2>
-        Total Paid: ${{ '%0.2f'|format(user.orders.total_paid|float) }}<br />
+        Total Paid: ${{ '%0.2f'|format(so.total_paid|float) }}<br />
         Total Due: ${{ '%0.2f'|format(so.chargeDiff()|float) }}
     </div>
 </section>
