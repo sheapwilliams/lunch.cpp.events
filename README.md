@@ -89,13 +89,13 @@ This table will have one line per session - when completed data transfered to or
 |---------------|---------------|
 | id            | int           |
 | user_id       | int           |
-| ip            | varchar(64)   |
 | timestamp     | varchar(64)   |
 | monday        | varchar(256)  |
 | tuesday       | varchar(256)  |
 | wednesday     | varchar(256)  |
 | thursday      | varchar(256)  |
 | friday        | varchar(256)  |
+| totalPaid     | int           |
 
 
 ### Notes
