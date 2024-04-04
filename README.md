@@ -17,15 +17,15 @@ It would be nice to make this more generic in the future.  Its being generated i
     - Add order - done
         - user adds 2 days - done 
         - totalPaid set to 60 - done
-    - Edit order - remove
+    - Edit order - remove - done
         - Tries to remove one item
-            - note - must email for refunds.
-        - Tries to add item(s)
-            - get new total
-            - charge differences
-                - on success
-                    - update total paid
-                - on failure - backout
+            - note - must email for refunds. 
+        - Tries to add item(s) - done
+            - get new total - done
+            - charge differences - done
+                - on success - done
+                    - update total paid - done
+                - on failure - backout - done
     - Past date at 9am MST - disable.
 
     
@@ -118,3 +118,27 @@ MAIL_USE_TLS=1
 MAIL_USERNAME=support@cpp.events
 MAIL_PASSWORD=<replace with pw>
 
+## Testing Procedures
+All tests are done with Stripe in test mode.
+- Create user
+- Add one item on a particular day
+    - Fail order using card number: 4000000000009995
+        - order should have not saved - session deleted.
+- Try order again
+    - Succeed order using care number: 4242424242424242
+        - order saved - email confirmation
+        - session deleted.
+- Edit Order
+    - Change order days - change previous selection to none, and pick different selection on different day.
+    - NOT CURRENTLY CODED FOR - POINT OUT NO CHANGE IN PRICE BUT DOES NOT SAVE.
+- Edit Order Add On - one day.
+    - Go to Order
+    - Add another day/menu item.
+    - Fail Order
+        - Be sure that the original order still stayed (one day paid)
+    - Succeed Order
+        - Be sure the new item is added after charge.
+- Edit Order - try to remove a day
+    - Total Due will show negative.
+    - Button is disabled stating Contact Support for Refunds.
+    
