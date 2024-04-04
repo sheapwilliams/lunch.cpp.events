@@ -83,14 +83,20 @@ This table will maintain for each user their total weekly order set.
 | friday        | varchar(256)  |
 | user_id       | int           |
 
-### Payments Table
-This table will have one line per order
+### Sessions Table - track order state/session.
+This table will have one line per session - when completed data transfered to order on success and record will be cleaned after 24 hours.
 | Field         |  Type         |
 |---------------|---------------|
 | id            | int           |
-| date          | varchar(64)   |
-| payment_details| varhchar(1024)|
-| user_id       | int   |
+| user_id       | int           |
+| ip            | varchar(64)   |
+| timestamp     | varchar(64)   |
+| monday        | varchar(256)  |
+| tuesday       | varchar(256)  |
+| wednesday     | varchar(256)  |
+| thursday      | varchar(256)  |
+| friday        | varchar(256)  |
+
 
 ### Notes
 https://picocss.com/docs

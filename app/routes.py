@@ -5,7 +5,7 @@ import stripe
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import LoginForm, OrderForm, PaymentForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
-from app.models import User, Order, session_order_total, session_order_total_days, session_order_charge_diff, session_order_total_days_diff
+from app.models import User, Order, Session, session_order_total, session_order_total_days, session_order_charge_diff, session_order_total_days_diff
 from app.email import send_password_reset_email, send_order_email
 
 
@@ -54,7 +54,7 @@ def order():
             order.wednesday = form.select_wednesday.data
             order.thursday = form.select_thursday.data
             order.friday = form.select_friday.data
-            order.success = ""
+            order.status = ""
             order.total_paid = 0
             db.session.add(order)
             db.session.commit()
@@ -64,14 +64,26 @@ def order():
             u.orders.wednesday = form.select_wednesday.data
             u.orders.thursday = form.select_thursday.data
             u.orders.friday = form.select_friday.data
-            session['order']  = dict(
+
+            sess = Session(user_id=current_user.get_id(),
                 monday = form.select_monday.data,
                 tuesday = form.select_tuesday.data,
                 wednesday = form.select_wednesday.data,
                 thursday = form.select_thursday.data,
                 friday = form.select_friday.data,
                 total_paid = u.orders.total_paid
-            )
+                )
+            db.session.add(sess)
+            db.session.commit()
+            
+            # session['order'] = {
+            #     "monday": form.select_monday.data,
+            #     "tuesday": form.select_tuesday.data,
+            #     "wednesday": form.select_wednesday.data,
+            #     "thursday":form.select_thursday.data,
+            #     "friday": form.select_friday.data,
+            #     "total_paid": u.orders.total_paid
+            # }
             
         #db.session.commit()
         #flash('Payment processing...' + u.orders.monday + ', ' + u.orders.wednesday + ' - user_id: ' + str(u.orders.user_id))
@@ -92,7 +104,8 @@ def order():
 def payment():
     form = PaymentForm()
     user = db.session.get(User, current_user.get_id())
-    so =  session['order']
+    #so =  session['order']
+    so = db.session.get(Session, current_user.get_id())
     if not user:
         return redirect(url_for('index'))
     
@@ -110,7 +123,7 @@ def payment():
 @login_required
 def create_checkout_session():
     #user = db.session.get(User, current_user.get_id())
-    so = session['order']
+    #so = session['order']
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
@@ -139,13 +152,19 @@ def success():
     #    customer = stripe.Customer.retrieve(session.customer)
 
     user = db.session.get(User, current_user.get_id())
-    so = session['order']
+    #so = session['order']
+    so = db.session.get(Session, current_user.get_id())
     if user:
-        paid = session.amount_total / 100 
-        user.orders.total_paid += paid
-        user.orders.success = "Paid!"
-        send_order_email(user)
+        paid = session.amount_total / 100
 
+        user.orders.monday = so.monday
+        user.orders.tuesday = so.tuesday
+
+        user.orders.total_paid += paid
+        user.orders.status = "Paid!"
+        send_order_email(user)
+        
+    db.session.delete(so)
     db.session.commit()
 
     return render_template('success.html', title='Successfully Purchased', user=user, session=session)
