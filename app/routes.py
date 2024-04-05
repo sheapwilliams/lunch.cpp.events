@@ -53,8 +53,6 @@ def order():
         tp = u.orders.total_paid
     
      if form.validate_on_submit():
-
-
         if sess == None:
             sess = Session(user_id=current_user.get_id(),
                 monday = form.select_monday.data,
@@ -95,6 +93,9 @@ def payment():
     if not user:
         return redirect(url_for('index'))
     
+    if so.chargeDiff() == 0:
+        return redirect(url_for('change_order'))
+    
     if form.validate_on_submit():
         flash('processing!')
         return redirect(url_for('create_checkout_session'))
@@ -102,10 +103,29 @@ def payment():
     return render_template('payment.html', title='Order Payment', form=form, user=user, so=so)
 
 
+@app.route('/change-order', methods=['GET','POST'])
+@login_required
+def change_order():
+    user = db.session.get(User, current_user.get_id())
+    so = db.session.get(Session, current_user.get_id())
+
+    user.orders.monday = so.monday
+    user.orders.tuesday = so.tuesday
+    user.orders.wednesday =  so.wednesday
+    user.orders.thursday = so.thursday
+    user.orders.friday = so.friday
+
+    send_order_email(user)
+
+    db.session.delete(so)
+    db.session.commit()
+
+    return render_template('change_order.html', title='Order Updated', user=user)
+
+
 @app.route('/create-checkout-session', methods=['GET','POST'])
 @login_required
 def create_checkout_session():
-    #user = db.session.get(User, current_user.get_id())
     so = db.session.get(Session, current_user.get_id())
     try:
         checkout_session = stripe.checkout.Session.create(
