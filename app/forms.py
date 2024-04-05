@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from flask_wtf.form import _Auto
 from wtforms import StringField, PasswordField, BooleanField, RadioField, SelectField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from datetime import datetime, time
+import pytz
 import sqlalchemy as sa
 from app import app, db
 from app.models import User, Order
@@ -59,9 +61,19 @@ class OrderForm(FlaskForm):
     def format_order_date(option):
         return app.config['ORDER_OPTIONS'][option]['date'];
 
+    def past_order_date(self,option):
+        order_date = app.config['ORDER_OPTIONS'][option]['date']
+        time_obj = time(9,0,0)
+        datetime_obj = datetime.strptime(order_date, '%m/%d/%y')
+        datetime_obj = datetime.combine(datetime_obj, time_obj)
+        datetime_obj = datetime_obj.replace(tzinfo=pytz.timezone("America/Denver"))
 
-    select_monday = SelectField(format_order_date(0),choices=format_order_items(0), 
-                                default=selected_order_item(0, orders.monday))
+        current_time = datetime.now(pytz.timezone("America/Denver"))
+        
+        return current_time > datetime_obj
+
+
+    select_monday = SelectField(format_order_date(0),choices=format_order_items(0), default=1)
     select_tuesday = SelectField(format_order_date(1),choices=format_order_items(1), default=1)
     select_wednesday = SelectField(format_order_date(2),choices=format_order_items(2), default=1)
     select_thursday = SelectField(format_order_date(3),choices=format_order_items(3), default=1)

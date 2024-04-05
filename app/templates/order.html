@@ -7,27 +7,51 @@
     <p>Select one lunch menu item for each day, or None (N) if you do not wish to have lunch delivered on that day.</p>
     <p>
         {{form.select_monday.label}}
+        {% if form.past_order_date(option=0) %}
+        {{ form.select_monday(disabled=True) }}
+        {% else %}
         {{form.select_monday}}<br>
+        {% endif %}
         {% for error in form.select_monday.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
+
         {{form.select_tuesday.label}}
+        {% if form.past_order_date(option=1) %}
+        {{ form.select_tuesday(disabled=True)}}
+        {% else %}
         {{form.select_tuesday}}<br>
+        {% endif %}
         {% for error in form.select_tuesday.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
+
         {{form.select_wednesday.label}}
+        {% if form.past_order_date(option=2) %}
+        {{form.select_wednesday(disabled=True)}}<br>
+        {% else %}
         {{form.select_wednesday}}<br>
+        {% endif %}
         {% for error in form.select_wednesday.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
+
         {{form.select_thursday.label}}
-        {{form.select_thursday}}<br>
+        {% if form.past_order_date(option=3) %}
+        {{ form.select_thursday(disabled=True) }}<br>
+        {% else %}
+        {{ form.select_thursday }}<br>
+        {% endif %}
         {% for error in form.select_thursday.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
+
         {{form.select_friday.label}}
+        {% if form.past_order_date(option=4) %}
+        {{form.select_friday(disabled=True)}}<br>
+        {% else %}
         {{form.select_friday}}<br>
+        {% endif %}
         {% for error in form.select_friday.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}

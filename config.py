@@ -24,7 +24,7 @@ class Config:
     ORDER_PRICE = 30
     ORDER_OPTIONS = [
         {
-            "date": "4/29/24 - Monday",
+            "date": "4/29/24",
             "options": [
                 {
                     "name": "None",
@@ -54,7 +54,7 @@ class Config:
             ]
         },
         {
-            "date": "4/30/24 - Tuesday",
+            "date": "4/30/24",
             "options": [
                 {
                     "name": "None",
@@ -84,7 +84,7 @@ class Config:
             ]
         },
         {
-            "date": "5/1/24 - Wednesday",
+            "date": "5/1/24",
             "options": [
                 {
                     "name": "None",
@@ -114,7 +114,7 @@ class Config:
             ]
         },
         {
-            "date": "5/2/24 - Thursday",
+            "date": "5/2/24",
             "options": [
                 {
                     "name": "None",
@@ -144,7 +144,7 @@ class Config:
             ]
         },
         {
-            "date": "5/3/24 - Friday",
+            "date": "5/3/24",
             "options": [
                 {
                     "name": "None",
