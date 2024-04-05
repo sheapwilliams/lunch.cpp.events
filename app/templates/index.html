@@ -10,22 +10,22 @@
     <div>
         <p>
             Welcome to the lunch order system for C++ Now. Here you can select from a menu of items from local
-            restaurants
-            which we will have delivered each day at lunch time.
+            restaurants which we will have delivered each day at lunch time.
         </p>
         <p>
-            The cost is {{ "$%.2f"|format(price) }} per day.
+            The cost is {{ "$%.2f"|format(price) }} per day. This price includes all delivery, tax and gratuity to the
+            restaurant. You pay only for the days you order
+            lunch on.
         </p>
         <p>
-            This price includes all delivery, tax and gratuity to the
-            restaurant.You pay only for the days you order lunch on. You can choose none for a day you do not wish to
-            order. The menu choices for each day are shown below.
+            Please note, there are no customizations or special requests. Likewise we do not have any specific
+            gluten free options as we cannot guarantee that from the restaurant.
         </p>
         <p>
-            <b>V</b> = Vegetarian
-            <b>C</b> = Chicken
-            <b>B</b> = Beef
-            <b>P</b> = Pork
+            <b>B</b> = Beef<br />
+            <b>C</b> = Chicken<br />
+            <b>P</b> = Pork<br />
+            <b>V</b> = Vegetarian (not Vegan)<br />
         </p>
         <p>
             Click <a href="/order">Order</a> to start when you are ready.
@@ -33,17 +33,22 @@
     </div>
 </article>
 
-<h2>2024 Menu Items</h2>
+<h2>2024 Menu Selections</h2>
+<p>You will use the <a href="/order">Order</a> feature to select your meals for each day. Here is a list of all choices
+    available for each day of the week.
+</p>
 <article>
     {% for item in items %}
     <div>
         <p>
             <b>{{ item.date }}</b></br>
+        <ul>
             {% for opt in item.options %}
             {% if opt.type != 'N' %}
-            {{ opt.name }} (<b>{{opt.type}}</b>) - {{opt.desc}}</br>
+            <li>{{ opt.name }} (<b>{{opt.type}}</b>) - {{opt.desc}}</li>
             {% endif %}
             {% endfor %}
+        </ul>
         </p>
     </div>
     {% endfor %}

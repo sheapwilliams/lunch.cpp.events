@@ -8,6 +8,17 @@ import sqlalchemy as sa
 from app import app, db
 from app.models import User, Order
 
+
+def past_order_date(option):
+    order_date = app.config['ORDER_OPTIONS'][option]['date']
+    time_obj = time(9,0,0)
+    datetime_obj = datetime.strptime(order_date, '%m/%d/%y')
+    datetime_obj = datetime.combine(datetime_obj, time_obj)
+    datetime_obj = datetime_obj.replace(tzinfo=pytz.timezone("America/Denver"))
+    current_time = datetime.now(pytz.timezone("America/Denver"))
+    return current_time > datetime_obj
+
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -40,37 +51,25 @@ class OrderForm(FlaskForm):
     order_options = app.config['ORDER_OPTIONS']
     order_options_count = len(order_options)
 
-    def selected_order_item(option, name):
-        sel = 1
-        for it in app.config['ORDER_OPTIONS'][option]['options']:
-            if name ==  "{} ({})".format(it['name'], it['type']):
-                return sel
-            sel = sel + 1
-        return 1 #
+    def format_order_date(option):
+        return app.config['ORDER_OPTIONS'][option]['date'];
 
     def format_order_items(option):
         item_list = []
         # app.config['ORDER_OPTIONS'][1]['options'][0]['name']
-        for it in app.config['ORDER_OPTIONS'][option]['options']:
-           name = "{} ({})".format(it['name'], it['type'])
-           desc = "{} ({}) - {}".format(it['name'], it['type'],  it['desc'])
-           item = (name, desc)
-           item_list.append(item)
-        return item_list
-    
-    def format_order_date(option):
-        return app.config['ORDER_OPTIONS'][option]['date'];
-
-    def past_order_date(self,option):
-        order_date = app.config['ORDER_OPTIONS'][option]['date']
-        time_obj = time(9,0,0)
-        datetime_obj = datetime.strptime(order_date, '%m/%d/%y')
-        datetime_obj = datetime.combine(datetime_obj, time_obj)
-        datetime_obj = datetime_obj.replace(tzinfo=pytz.timezone("America/Denver"))
-
-        current_time = datetime.now(pytz.timezone("America/Denver"))
+        if past_order_date(option):
+            name = "Past"
+            desc = "No longer accepting orders for this date."
+            item = (name, desc)
+            item_list.append(item)
+        else:
+            for it in app.config['ORDER_OPTIONS'][option]['options']:
+                name = "{} ({})".format(it['name'], it['type'])
+                desc = "{} ({}) - {}".format(it['name'], it['type'],  it['desc'])
+                item = (name, desc)
+                item_list.append(item)
         
-        return current_time > datetime_obj
+        return item_list
 
 
     select_monday = SelectField(format_order_date(0),choices=format_order_items(0), default=1)
@@ -79,7 +78,9 @@ class OrderForm(FlaskForm):
     select_thursday = SelectField(format_order_date(3),choices=format_order_items(3), default=1)
     select_friday = SelectField(format_order_date(4),choices=format_order_items(4), default=1)
 
-    submit = SubmitField('Order Now')
+    submit = SubmitField('Submit')
+
+
 
 class PaymentForm(FlaskForm):
     card = StringField('Card Details')

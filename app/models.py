@@ -37,22 +37,26 @@ class User(UserMixin, db.Model):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256')
-
+ 
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, app.config['SECRET_KEY'],
+            rid = jwt.decode(token, app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
         except:
             return
-        return db.session.get(User, id)
+        return db.session.get(User, rid)
     
 
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
 
-    
+def paid_day(day):
+    if "None (N)" not in day and "Past" not in day:
+        return True
+    return False
+
 class Order(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     timestamp: so.Mapped[datetime] = so.mapped_column(
@@ -71,10 +75,10 @@ class Order(db.Model):
         return '<Order id:{} uid:{} m:{} t:{} w:{} t:{} f:{} timestamp:{}>'.format(
             self.id,self.user_id,self.monday, self.tuesday, self.wednesday, self.thursday, self.friday, self.timestamp
             )
-    
+
     def total(self) -> int:
         total = 0;
-        if self.monday != "None (N)":
+        if paid_day(self.monday):
             total += app.config['ORDER_PRICE']
         if self.tuesday != "None (N)":
             total += app.config['ORDER_PRICE']
@@ -88,7 +92,7 @@ class Order(db.Model):
     
     def totalDays(self) -> int:
         total = 0;
-        if self.monday != "None (N)":
+        if paid_day(self.monday):
             total += 1
         if self.tuesday != "None (N)":
             total += 1
@@ -128,7 +132,7 @@ class Session(db.Model):
     
     def total(self) -> int:
         total = 0;
-        if self.monday != "None (N)":
+        if paid_day(self.monday):
             total += app.config['ORDER_PRICE']
         if self.tuesday != "None (N)":
             total += app.config['ORDER_PRICE']
@@ -142,7 +146,7 @@ class Session(db.Model):
     
     def totalDays(self) -> int:
         total = 0;
-        if self.monday != "None (N)":
+        if paid_day(self.monday):
             total += 1
         if self.tuesday != "None (N)":
             total += 1

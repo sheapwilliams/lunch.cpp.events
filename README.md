@@ -121,16 +121,16 @@ MAIL_PASSWORD=<replace with pw>
 ## Testing Procedures
 All tests are done with Stripe in test mode.
 - Create user
+- Forgot Password/Reset
 - Add one item on a particular day
     - Fail order using card number: 4000000000009995
         - order should have not saved - session deleted.
 - Try order again
     - Succeed order using care number: 4242424242424242
         - order saved - email confirmation
-        - session deleted.
 - Edit Order
     - Change order days - change previous selection to none, and pick different selection on different day.
-    - NOT CURRENTLY CODED FOR - POINT OUT NO CHANGE IN PRICE BUT DOES NOT SAVE.
+    - No charge - order updated.
 - Edit Order Add On - one day.
     - Go to Order
     - Add another day/menu item.

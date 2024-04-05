@@ -109,11 +109,20 @@ def change_order():
     user = db.session.get(User, current_user.get_id())
     so = db.session.get(Session, current_user.get_id())
 
-    user.orders.monday = so.monday
-    user.orders.tuesday = so.tuesday
-    user.orders.wednesday =  so.wednesday
-    user.orders.thursday = so.thursday
-    user.orders.friday = so.friday
+    if so.monday != "Past":
+        user.orders.monday = so.monday
+
+    if so.tuesday != "Past":    
+        user.orders.tuesday = so.tuesday
+
+    if so.wednesday != "Past":    
+        user.orders.wednesday =  so.wednesday
+
+    if so.thursday != "Past":    
+        user.orders.thursday = so.thursday
+
+    if so.friday != "Past":
+        user.orders.friday = so.friday
 
     send_order_email(user)
 
@@ -169,11 +178,16 @@ def success():
             db.session.add(order)
             db.session.commit()
         else:
-            user.orders.monday = so.monday
-            user.orders.tuesday = so.tuesday
-            user.orders.wednesday =  so.wednesday
-            user.orders.thursday = so.thursday
-            user.orders.friday = so.friday
+            if so.monday != "Past":
+                user.orders.monday = so.monday
+            if so.tuesday != "Past":    
+                user.orders.tuesday = so.tuesday
+            if so.wednesday != "Past":    
+                user.orders.wednesday =  so.wednesday
+            if so.thursday != "Past":    
+                user.orders.thursday = so.thursday
+            if so.friday != "Past":
+                user.orders.friday = so.friday
 
         user.orders.total_paid += paid
         user.orders.status = "Paid!"
