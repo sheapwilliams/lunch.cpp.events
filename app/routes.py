@@ -222,15 +222,14 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/user/<username>')
+@app.route('/status')
 @login_required
-def user(username):
-    user = db.first_or_404(sa.select(User).where(User.username == username))
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('user.html', user=user, posts=posts)
+def status():
+    user = db.session.get(User, current_user.get_id())
+    if user.orders == None:
+        return render_template('status_none.html', title='Order Status')
+    
+    return render_template('status.html', title='Order Status', user=user)
 
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])

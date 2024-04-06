@@ -13,6 +13,7 @@
         <th>Day</th>
         <th>Lunch Order</th>
     </thead>
+    {% if 'Past' not in so['monday'] %}
     <tr>
         <th scope="row">
             Monday
@@ -21,6 +22,8 @@
             {{ so['monday'] }}
         </td>
     </tr>
+    {% endif %}
+    {% if 'Past' not in so['tuesday'] %}
     <tr>
         <th scope="row">
             Tuesday
@@ -29,6 +32,8 @@
             {{ so['tuesday'] }}
         </td>
     </tr>
+    {% endif %}
+    {% if 'Past' not in so['wednesday'] %}
     <tr>
         <th scope="row">
             Wednesday
@@ -37,6 +42,8 @@
             {{ so['wednesday'] }}
         </td>
     </tr>
+    {% endif %}
+    {% if 'Past' not in so['thursday'] %}
     <tr>
         <th scope="row">
             Thursday
@@ -45,6 +52,8 @@
             {{ so['thursday'] }}
         </td>
     </tr>
+    {% endif %}
+    {% if 'Past' not in so['friday'] %}
     <tr>
         <th scope="row">
             Friday
@@ -53,10 +62,11 @@
             {{ so['friday'] }}
         </td>
     </tr>
+    {% endif %}
 </table>
 <section>
     <div align="center">
-        <h2>Total Due: ${{ '%0.2f'|format(so.chargeDiff()|float) }}!</h2>
+        <h2>Total Due: ${{ '%0.2f'|format(so.chargeDiff()|float) }}</h2>
         <form action="/create-checkout-session" method="POST">
             {% if so.totalDaysDiff()==0 %}
             <button type="submit" id="checkout-button" disabled>No Change</button>

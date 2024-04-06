@@ -30,6 +30,7 @@
             <img src="{{ url_for('static',filename='cppnow-logo.png') }}" alt="cppnow-logo" align="right" />
             <a role="button" href="{{ url_for('index') }}">Home</a>
             <a role="button" href="{{ url_for('order') }}">Order</a>
+            <a role="button" href="{{ url_for('status') }}">Status</a>
             {% if current_user.is_anonymous %}
             <a role="button" href="{{ url_for('login') }}">Login</a>
             {% else %}

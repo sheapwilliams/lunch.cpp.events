@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Order Status</h1>
+<section>
+    <table>
+        <thead data-theme="light">
+            <th>Day</th>
+            <th>Lunch Order</th>
+        </thead>
+        <tr>
+            <th scope="row">
+                Monday
+            </th>
+            <td>
+                {{ user.orders.monday }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                Tuesday
+            </th>
+            <td>
+                {{ user.orders.tuesday }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                Wednesday
+            </th>
+            <td>
+                {{ user.orders.wednesday }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                Thursday
+            </th>
+            <td>
+                {{ user.orders.thursday }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                Friday
+            </th>
+            <td>
+                {{ user.orders.friday }}
+            </td>
+        </tr>
+    </table>
+</section>
+<section>
+    <div>
+        <h2>Total Paid: ${{ '%0.2f'|format(user.orders.total_paid|float) }}</h2>
+    </div>
+</section>
+<p>
+    Questions? Email <a href="mailto:lunch@cpp.events">lunch@cpp.events</a>
+</p>
+{% endblock %}

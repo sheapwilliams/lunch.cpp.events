@@ -128,6 +128,8 @@ All tests are done with Stripe in test mode.
 - Try order again
     - Succeed order using care number: 4242424242424242
         - order saved - email confirmation
+- Move date to Past
+    - Order button hows 'No longer accepting...' for date in past (though previous order is there).
 - Edit Order
     - Change order days - change previous selection to none, and pick different selection on different day.
     - No charge - order updated.
