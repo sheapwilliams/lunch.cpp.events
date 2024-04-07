@@ -27,6 +27,10 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
+        sess = db.session.get(Session, current_user.get_id())
+        if sess is not None:
+            db.session.delete(sess)
+            db.session.commit()
         next_page = request.args.get('next')
         if not next_page or urlsplit(next_page).netloc != '':
             next_page = url_for('index')
@@ -36,6 +40,10 @@ def login():
 
 @app.route('/logout')
 def logout():
+    sess = db.session.get(Session, current_user.get_id())
+    if sess is not None:
+        db.session.delete(sess)
+        db.session.commit()
     logout_user()
     return redirect(url_for('index'))
 
