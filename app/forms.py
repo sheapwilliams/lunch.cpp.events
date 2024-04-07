@@ -47,7 +47,6 @@ class RegistrationForm(FlaskForm):
 
 
 class OrderForm(FlaskForm):
-    orders = Order()
     order_options = app.config['ORDER_OPTIONS']
     order_options_count = len(order_options)
 
@@ -71,7 +70,6 @@ class OrderForm(FlaskForm):
         
         return item_list
 
-
     select_monday = SelectField(format_order_date(0),choices=format_order_items(0), default=1)
     select_tuesday = SelectField(format_order_date(1),choices=format_order_items(1), default=1)
     select_wednesday = SelectField(format_order_date(2),choices=format_order_items(2), default=1)
@@ -81,9 +79,7 @@ class OrderForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-
 class PaymentForm(FlaskForm):
-    card = StringField('Card Details')
     submit = SubmitField('Process')
 
 class ResetPasswordRequestForm(FlaskForm):

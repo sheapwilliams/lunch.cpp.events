@@ -45,15 +45,14 @@ def logout():
 def order():
      form = OrderForm()
      u = db.session.get(User, current_user.get_id())
-     sess = db.session.get(Session, current_user.get_id())
+     tp = 0
 
-     if u.orders == None:
-        tp = 0
-     else:
+     if u.orders is not None:
         tp = u.orders.total_paid
     
      if form.validate_on_submit():
-        if sess == None:
+        sess = db.session.get(Session, current_user.get_id())
+        if sess is None:
             sess = Session(user_id=current_user.get_id(),
                 monday = form.select_monday.data,
                 tuesday = form.select_tuesday.data,
@@ -90,17 +89,17 @@ def payment():
     form = PaymentForm()
     user = db.session.get(User, current_user.get_id())
     so = db.session.get(Session, current_user.get_id())
-    if not user:
+    if not user or not so:
         return redirect(url_for('index'))
     
-    if so.chargeDiff() == 0:
-        return redirect(url_for('change_order'))
-    
     if form.validate_on_submit():
+        if so.chargeDiff() == 0:
+            return redirect(url_for('change_order'))
+        
         flash('processing!')
         return redirect(url_for('create_checkout_session'))
 
-    return render_template('payment.html', title='Order Payment', form=form, user=user, so=so)
+    return render_template('payment.html', title='Payment', form=form, user=user, so=so)
 
 
 @app.route('/change-order', methods=['GET','POST'])
