@@ -70,11 +70,11 @@
         <form action="/create-checkout-session" method="POST">
             {{ form.hidden_tag() }}
             {% if so.totalDaysDiff()==0 %}
-            <button type="submit" id="checkout-button" disabled>No Change</button>
-            {% elif so.totalDaysDiff()<0 %} <button type="submit" id="checkout-button" disabled>Contact
-                lunch@cpp.events for Refunds</button>
+            <button type="submit" id="checkout-button" disabled>Updated</button>
+            {% elif so.totalDaysDiff()<0 %} <button type="submit" id="checkout-button" disabled>Credit on File. Contact
+                lunch@cpp.events for refunds.</button>
                 {% else %}
-                <button type="submit" id="checkout-button">Check Out</button>
+                <button type="submit" id="checkout-button">Please Pay</button>
                 {% endif %}
         </form>
     </div>
