@@ -109,20 +109,29 @@ def change_order():
     user = db.session.get(User, current_user.get_id())
     so = db.session.get(Session, current_user.get_id())
 
-    if so.monday != "Past":
-        user.orders.monday = so.monday
 
-    if so.tuesday != "Past":    
-        user.orders.tuesday = so.tuesday
-
-    if so.wednesday != "Past":    
-        user.orders.wednesday =  so.wednesday
-
-    if so.thursday != "Past":    
-        user.orders.thursday = so.thursday
-
-    if so.friday != "Past":
-        user.orders.friday = so.friday
+    if user.orders == None:
+        order = Order(user_id=current_user.get_id())
+        order.monday = so.monday
+        order.tuesday = so.tuesday
+        order.wednesday = so.wednesday
+        order.thursday = so.thursday
+        order.friday = so.friday
+        order.status = ""
+        order.total_paid = 0
+        db.session.add(order)
+        db.session.commit()
+    else:
+        if so.monday != "Past":
+            user.orders.monday = so.monday
+        if so.tuesday != "Past":    
+            user.orders.tuesday = so.tuesday
+        if so.wednesday != "Past":    
+            user.orders.wednesday =  so.wednesday
+        if so.thursday != "Past":    
+            user.orders.thursday = so.thursday
+        if so.friday != "Past":
+            user.orders.friday = so.friday
 
     send_order_email(user)
 

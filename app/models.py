@@ -134,13 +134,13 @@ class Session(db.Model):
         total = 0;
         if paid_day(self.monday):
             total += app.config['ORDER_PRICE']
-        if self.tuesday != "None (N)":
+        if paid_day(self.tuesday):
             total += app.config['ORDER_PRICE']
-        if self.wednesday != "None (N)":
+        if paid_day(self.wednesday):
             total += app.config['ORDER_PRICE']
-        if self.thursday != "None (N)":
+        if paid_day(self.thursday):
             total += app.config['ORDER_PRICE']
-        if self.friday != "None (N)":
+        if paid_day(self.friday):
             total += app.config['ORDER_PRICE']
         return total
     
@@ -148,13 +148,13 @@ class Session(db.Model):
         total = 0;
         if paid_day(self.monday):
             total += 1
-        if self.tuesday != "None (N)":
+        if paid_day(self.tuesday):
             total += 1
-        if self.wednesday != "None (N)":
+        if paid_day(self.wednesday):
             total += 1
-        if self.thursday != "None (N)":
+        if paid_day(self.thursday):
             total += 1
-        if self.friday != "None (N)":
+        if paid_day(self.friday):
             total += 1
         return total  
     
