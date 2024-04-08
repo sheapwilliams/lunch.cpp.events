@@ -3,4 +3,5 @@
 __pycache__
 instance
 logs/
+tmp/
 lunch.db
