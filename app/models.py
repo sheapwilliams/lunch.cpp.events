@@ -58,6 +58,7 @@ def paid_day(day):
     return False
 
 class Order(db.Model):
+    __tablename__ = "orders"
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     timestamp: so.Mapped[datetime] = so.mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc))

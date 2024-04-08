@@ -24,7 +24,7 @@ class Config:
     ORDER_PRICE = 30
     ORDER_OPTIONS = [
         {
-            "date": "4/5/24",
+            "date": "4/6/24",
             "options": [
                 {
                     "name": "None",
@@ -42,19 +42,24 @@ class Config:
                     "desc": "Grilled Chicken with Tomatillo Salsa, Pico and Fresh Cilantro"
                 },
                 {
-                    "name": "Philly Cheese Steak",
-                    "type": "B",
-                    "desc": "Classic Hoagie Bun, Shaved Sirloin Steak, Onions, Melted American Cheese and Spicy Mayo"
-                },
-                {
                     "name": "Carne Asada Burrito",
                     "type": "B",
                     "desc": "Grilled Flank Steak, Tomatillo Salsa, Pico, French Fries, Shredded Lettuce and Guacamole"
+                },
+                {
+                    "name": "Riviera",
+                    "type": "V",
+                    "desc": "Tomato, mozzarella, basil, organic spinach & vinaigrette dressing"
+                },
+                {
+                    "name": "Preston",
+                    "type": "P",
+                    "desc": "Roast pork loin, sauteed onions, provolone & gravy"
                 }
             ]
         },
         {
-            "date": "4/6/24",
+            "date": "4/7/24",
             "options": [
                 {
                     "name": "None",
@@ -80,11 +85,61 @@ class Config:
                     "name": "Preston",
                     "type": "P",
                     "desc": "Roast pork loin, sauteed onions, provolone & gravy"
+                },
+                {
+                    "name": "Pepperoni",
+                    "type": "B",
+                    "desc": "Pepperoni with roasted tomato sauce & mozzarella",
+                },
+                {
+                    "name": "Margherita",
+                    "type": "V",
+                    "desc": "Roasted tomato sauce, fresh mozzarella, sliced tomatoes & sweet basil"
                 }
             ]
         },
         {
-            "date": "4/7/24",
+            "date": "5/1/24",
+            "options": [
+                {
+                    "name": "None",
+                    "type": "N",
+                    "desc": "No Lunch Selected"
+                },
+                {
+                    "name": "Black Bean Burger",
+                    "type": "V",
+                    "desc": "Zesty blend of black beans, brown rice, onions, peppers, corn, lettuce tomato & pickle, Fries and Coleslaw"
+                },
+                {
+                    "name": "Grilled Chicken Breast Sandwich",
+                    "type": "C",
+                    "desc": "8oz Chicken Breast topped with BBQ Sauce, Fries and Coleslaw"
+                },
+                {
+                    "name": "Smoked Beef Brisket",
+                    "type": "B",
+                    "desc": "Beef brisket, fries, cole slaw and garlic toast."
+                },
+                {
+                    "name": "Smoked pulled Pork ",
+                    "type": "P",
+                    "desc": "Pulled pork, fries, cole slaw and garlic toast."
+                },                
+                {
+                    "name": "Pepperoni",
+                    "type": "B",
+                    "desc": "Pepperoni with roasted tomato sauce & mozzarella",
+                },
+                {
+                    "name": "Margherita",
+                    "type": "V",
+                    "desc": "Roasted tomato sauce, fresh mozzarella, sliced tomatoes & sweet basil"
+                }
+            ]
+        },
+        {
+            "date": "5/2/24",
             "options": [
                 {
                     "name": "None",
@@ -114,37 +169,7 @@ class Config:
             ]
         },
         {
-            "date": "4/8/24",
-            "options": [
-                {
-                    "name": "None",
-                    "type": "N",
-                    "desc": "No Lunch Selected"
-                },
-                {
-                    "name": "Black Bean Burger",
-                    "type": "V",
-                    "desc": "Zesty blend of black beans, brown rice, onions, peppers, corn, lettuce tomato & pickle, Fries and Coleslaw"
-                },
-                {
-                    "name": "Grilled Chicken Breast Sandwich",
-                    "type": "C",
-                    "desc": "8oz Chicken Breast topped with BBQ Sauce, Fries and Coleslaw"
-                },
-                {
-                    "name": "Smoked Beef Brisket",
-                    "type": "B",
-                    "desc": "Beef brisket, fries, cole slaw and garlic toast."
-                },
-                {
-                    "name": "Smoked pulled Pork ",
-                    "type": "P",
-                    "desc": "Pulled pork, fries, cole slaw and garlic toast."
-                }
-            ]
-        },
-        {
-            "date": "4/9/24",
+            "date": "5/3/24",
             "options": [
                 {
                     "name": "None",

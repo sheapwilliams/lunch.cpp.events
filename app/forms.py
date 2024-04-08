@@ -11,7 +11,7 @@ from app.models import User, Order
 
 def past_order_date(option):
     order_date = app.config['ORDER_OPTIONS'][option]['date']
-    time_obj = time(9,0,0)
+    time_obj = time(7,0,0)
     datetime_obj = datetime.strptime(order_date, '%m/%d/%y')
     datetime_obj = datetime.combine(datetime_obj, time_obj)
     datetime_obj = datetime_obj.replace(tzinfo=pytz.timezone("America/Denver"))

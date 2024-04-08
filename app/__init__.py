@@ -33,7 +33,7 @@ if not app.debug:
             fromaddr=app.config['ADMINS'],
             toaddrs='errors-lunch@cpp.events', subject='lunch.cpp.events Failure',
             credentials=auth, secure=secure)
-        mail_handler.setLevel(logging.INFO)
+        mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 
     if not os.path.exists('logs'):
