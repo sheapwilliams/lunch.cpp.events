@@ -52,9 +52,11 @@ def logout():
 @app.route('/order', methods=['GET','POST'])
 @login_required
 def order():
+     tp = 0
      form = OrderForm()
      u = db.session.get(User, current_user.get_id())
-     tp = 0
+     if u is None:
+        return redirect(url_for('index'))
 
      if u.orders is not None:
         tp = u.orders.total_paid
@@ -79,7 +81,6 @@ def order():
             sess.friday = form.select_friday.data
             
         db.session.commit()
-        #flash('Payment processing...' + u.orders.monday + ', ' + u.orders.wednesday + ' - user_id: ' + str(u.orders.user_id))
         return redirect(url_for('payment'))
      
      if u.orders != None:
