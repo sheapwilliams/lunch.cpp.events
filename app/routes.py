@@ -28,7 +28,7 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        sess = db.session.get(Session, current_user.get_id())
+        sess = Session.query.filter_by(user_id=current_user.get_id()).first()
         if sess is not None:
             db.session.delete(sess)
             db.session.commit()
@@ -41,7 +41,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    sess = db.session.get(Session, current_user.get_id())
+    sess = Session.query.filter_by(user_id=current_user.get_id()).first()
     if sess is not None:
         db.session.delete(sess)
         db.session.commit()
@@ -54,7 +54,7 @@ def logout():
 def order():
      tp = 0
      form = OrderForm()
-     u = db.session.get(User, current_user.get_id())
+     u = User.query.get(current_user.get_id())
      if u is None:
         app.logger.info("No User found for order.  %s", current_user.get_id())
         return redirect(url_for('index'))
@@ -63,8 +63,11 @@ def order():
         tp = u.orders.total_paid
     
      if form.validate_on_submit():
-        sess = db.session.get(Session, current_user.get_id())
+        #  User.query.filter_by(username='admin').first()
+        #sess = db.session.get(Session, current_user.get_id())
+        sess = Session.query.filter_by(user_id=current_user.get_id()).first()
         if sess is None:
+            app.logger.info("No session found for user: %s", current_user.get_id())
             sess = Session(user_id=current_user.get_id(),
                 monday = form.select_monday.data,
                 tuesday = form.select_tuesday.data,
@@ -104,7 +107,7 @@ def order():
 def payment():
     form = PaymentForm()
     user = db.session.get(User, current_user.get_id())
-    so = db.session.get(Session, current_user.get_id())
+    so = Session.query.filter_by(user_id=current_user.get_id()).first()
     if not user or not so:
         return redirect(url_for('index'))
     
@@ -122,7 +125,7 @@ def payment():
 @login_required
 def change_order():
     user = db.session.get(User, current_user.get_id())
-    so = db.session.get(Session, current_user.get_id())
+    so = Session.query.filter_by(user_id=current_user.get_id()).first()
 
 
     if user.orders == None:
@@ -159,7 +162,7 @@ def change_order():
 @app.route('/create-checkout-session', methods=['GET','POST'])
 @login_required
 def create_checkout_session():
-    so = db.session.get(Session, current_user.get_id())
+    so = Session.query.filter_by(user_id=current_user.get_id()).first()
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
@@ -185,7 +188,7 @@ def create_checkout_session():
 def success():
     session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
     user = db.session.get(User, current_user.get_id())
-    so = db.session.get(Session, current_user.get_id())
+    so = Session.query.filter_by(user_id=current_user.get_id()).first()
 
     if user:
         paid = session.amount_total / 100
@@ -225,7 +228,7 @@ def success():
 
 @app.route('/cancel')
 def cancel():
-    so = db.session.get(Session, current_user.get_id())
+    so = Session.query.filter_by(user_id=current_user.get_id()).first()
     db.session.delete(so)
     db.session.commit()
     return render_template('cancel.html')

@@ -144,3 +144,8 @@ All tests are done with Stripe in test mode.
     - Total Due will show negative.
     - Button is disabled stating Contact Support for Refunds.
     
+### Other things...
+docker system prune -a
+docker volume prune
+docker-compose up
+docker-compose down -v (force rebuilding db with init scripts).

@@ -5,7 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
-    SERVER_DOMAIN = os.environ.get('SERVER_DOMAIN') or 'http://192.168.0.20:5001'
+    SERVER_DOMAIN = os.environ.get('SERVER_DOMAIN') or 'http://127.0.0.1:5001'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'SavingAspenLunchesIn2024'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'lunch.db')
