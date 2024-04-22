@@ -63,8 +63,6 @@ def order():
         tp = u.orders.total_paid
     
      if form.validate_on_submit():
-        #  User.query.filter_by(username='admin').first()
-        #sess = db.session.get(Session, current_user.get_id())
         sess = Session.query.filter_by(user_id=current_user.get_id()).first()
         if sess is None:
             app.logger.info("No session found for user: %s", current_user.get_id())
@@ -84,13 +82,9 @@ def order():
             sess.thursday = form.select_thursday.data
             sess.friday = form.select_friday.data
             
-        try:    
-            db.session.commit()
-            return redirect(url_for('payment'))
-        except:
-            app.logger.info("Error on session commit.")
-            if sess is None:
-                app.logger.info("No session was found")
+  
+        db.session.commit()
+        return redirect(url_for('payment'))
      
      if u.orders != None:
          form.select_monday.data = u.orders.monday

@@ -24,7 +24,7 @@ class Config:
     ORDER_PRICE = 30
     ORDER_OPTIONS = [
         {
-            "date": "4/6/24",
+            "date": "4/29/24",
             "options": [
                 {
                     "name": "None",
@@ -59,7 +59,7 @@ class Config:
             ]
         },
         {
-            "date": "4/7/24",
+            "date": "4/30/24",
             "options": [
                 {
                     "name": "None",
@@ -107,6 +107,46 @@ class Config:
                     "desc": "No Lunch Selected"
                 },
                 {
+                    "name": "Vegan Laksa Pak",
+                    "type": "V",
+                    "desc": "Steamed noodles in vegan yellow curry, mixed vegetables and fried onions."
+                },
+                {
+                    "name": "Orange Chicken Bowl",
+                    "type": "C",
+                    "desc": "Lightly battered chicken nuggest prepared in homemade sauce featuring fresh oranges with house wild rice."
+                },
+                {
+                    "name": "Beef Boat Bowl",
+                    "type": "B",
+                    "desc": "Traditional spicy thai beef noodle with bean sprouts and thai basil."
+                },
+                {
+                    "name": "Pad Thai Pork ",
+                    "type": "P",
+                    "desc": "Most popular Thai noodle dish featuring stir-fried thin rice noodle with egg, bean sprouts, scallions and crunchy peanuts."
+                },                
+                {
+                    "name": "Riviera",
+                    "type": "V",
+                    "desc": "Tomato, mozzarella, basil, organic spinach & vinaigrette dressing"
+                },
+                {
+                    "name": "Preston",
+                    "type": "P",
+                    "desc": "Roast pork loin, sauteed onions, provolone & gravy"
+                }
+            ]
+        },
+        {
+            "date": "5/2/24",
+            "options": [
+                {
+                    "name": "None",
+                    "type": "N",
+                    "desc": "No Lunch Selected"
+                },
+                {
                     "name": "Black Bean Burger",
                     "type": "V",
                     "desc": "Zesty blend of black beans, brown rice, onions, peppers, corn, lettuce tomato & pickle, Fries and Coleslaw"
@@ -139,36 +179,6 @@ class Config:
             ]
         },
         {
-            "date": "5/2/24",
-            "options": [
-                {
-                    "name": "None",
-                    "type": "N",
-                    "desc": "No Lunch Selected"
-                },
-                {
-                    "name": "Black Bean Burger",
-                    "type": "V",
-                    "desc": "Zesty blend of black beans, brown rice, onions, peppers, corn, lettuce tomato & pickle, Fries and Coleslaw"
-                },
-                {
-                    "name": "Grilled Chicken Breast Sandwich",
-                    "type": "C",
-                    "desc": "8oz Chicken Breast topped with BBQ Sauce, Fries and Coleslaw"
-                },
-                {
-                    "name": "Smoked Beef Brisket",
-                    "type": "B",
-                    "desc": "Beef brisket, fries, cole slaw and garlic toast."
-                },
-                {
-                    "name": "Smoked pulled Pork ",
-                    "type": "P",
-                    "desc": "Pulled pork, fries, cole slaw and garlic toast."
-                }
-            ]
-        },
-        {
             "date": "5/3/24",
             "options": [
                 {
@@ -177,25 +187,30 @@ class Config:
                     "desc": "No Lunch Selected"
                 },
                 {
-                    "name": "Black Bean Burger",
+                    "name": "Basil Pesto",
                     "type": "V",
-                    "desc": "Zesty blend of black beans, brown rice, onions, peppers, corn, lettuce tomato & pickle, Fries and Coleslaw"
+                    "desc": "Pesto, Roma Tomatoes, Olives, Goat Cheese & Pine Nuts."
                 },
                 {
-                    "name": "Grilled Chicken Breast Sandwich",
+                    "name": "Margherita",
+                    "type": "V",
+                    "desc": "Roasted Tomato Sauce, Fresh Mozzarella, Sliced Tomatoes & Sweet Basil."
+                },
+                {
+                    "name": "Linguini with Chicken & Broccoli",
                     "type": "C",
-                    "desc": "8oz Chicken Breast topped with BBQ Sauce, Fries and Coleslaw"
+                    "desc": "White wine garlic broth, chili flakes, capers."
                 },
                 {
-                    "name": "Smoked Beef Brisket",
-                    "type": "B",
-                    "desc": "Beef brisket, fries, cole slaw and garlic toast."
-                },
-                {
-                    "name": "Smoked pulled Pork ",
+                    "name": "The Italian Job",
                     "type": "P",
-                    "desc": "Pulled pork, fries, cole slaw and garlic toast."
-                }
+                    "desc": "Mortadella, nduja sausage, caciocavallo & mozzarella cheese, basil."
+                },
+                {
+                    "name": "Mezz Burger",
+                    "type": "B",
+                    "desc": "Char-grilled beef burger with cheddar on fresh bun with chipotle aioli, lettuce, tomato & onion, served with french frizz."
+                },
             ]
         }
     ]
