@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Lunch Order</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>Select one lunch menu item for each day, or None (N) if you do not wish to have lunch delivered on that day.
+        <br />Order cut off time is 9:00AM MST the day of.
+    </p>
+    <p>
+        <b>B</b> = Beef |
+        <b>C</b> = Chicken |
+        <b>P</b> = Pork |
+        <b>V</b> = Vegetarian (not Vegan)
+    </p>
+    <p>
+        {{form.select_monday.label}}
+        {{form.select_monday}}<br>
+        {% for error in form.select_monday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        {{form.select_tuesday.label}}
+        {{form.select_tuesday}}<br>
+        {% for error in form.select_tuesday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        {{form.select_wednesday.label}}
+        {{form.select_wednesday}}<br>
+        {% for error in form.select_wednesday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        {{form.select_thursday.label}}
+        {{ form.select_thursday }}<br>
+        {% for error in form.select_thursday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        {{form.select_friday.label}}
+        {{form.select_friday}}<br>
+        {% for error in form.select_friday.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

@@ -1,0 +1,8 @@
+.venv
+.env
+__pycache__
+instance
+logs/
+tmp/
+lunch.db
+.idea
