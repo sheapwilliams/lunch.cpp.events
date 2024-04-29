@@ -17,7 +17,8 @@
             restaurant. You pay only for the days you order lunch on.
         </p>
         <p>
-            Please note, there are no customizations or special requests.
+            Please note, there are no customizations or special requests. You <b>must</b> order by midnight the day
+            before.
         </p>
         <p>
             <b>B</b> = Beef<br />
@@ -39,7 +40,7 @@
     {% for item in items %}
     <div>
         <p>
-            <b>{{ item.date }}</b></br>
+            <b>{{ item.date }}</b><br />
         <ul>
             {% for opt in item.options %}
             {% if opt.type != 'N' %}

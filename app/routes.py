@@ -8,13 +8,17 @@ from app.forms import LoginForm, OrderForm, PaymentForm, RegistrationForm, Reset
 from app.models import User, Order, Session
 from app.email import send_password_reset_email, send_order_email
 
-
+#-----------------------------------------------------------------------------
+def log_details(user, message):
+    app.logger.info("%s - %s - %s", request.remote_addr, user, message )
+        
+#-----------------------------------------------------------------------------
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html', title='C++ Now', price=app.config['ORDER_PRICE'], items=app.config['ORDER_OPTIONS'])
 
-
+#-----------------------------------------------------------------------------
 @app.route('/login', methods=['GET','POST'])
 def login():
     if current_user.is_authenticated:
@@ -25,11 +29,13 @@ def login():
             sa.select(User).where(User.username == form.username.data))
         if user is None or not user.check_password(form.password.data):
             app.logger.info("Failed login for: %s", user)
+            log_details(user, "Login failed for user!")
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         sess = Session.query.filter_by(user_id=current_user.get_id()).first()
         if sess is not None:
+            log_details(user, "Clearing previous session.")
             db.session.delete(sess)
             db.session.commit()
         next_page = request.args.get('next')
@@ -38,7 +44,7 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
-
+#-----------------------------------------------------------------------------
 @app.route('/logout')
 def logout():
     sess = Session.query.filter_by(user_id=current_user.get_id()).first()
@@ -48,7 +54,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
+#-----------------------------------------------------------------------------
 @app.route('/order', methods=['GET','POST'])
 @login_required
 def order():
@@ -56,7 +62,7 @@ def order():
      form = OrderForm()
      u = User.query.get(current_user.get_id())
      if u is None:
-        app.logger.info("No User found for order.  %s", current_user.get_id())
+        app.logger.info("No User found for order. %s - %s", current_user, current_user.get_id())
         return redirect(url_for('index'))
 
      if u.orders is not None:
@@ -95,7 +101,7 @@ def order():
 
      return render_template('order.html', title="Order", form=form)
 
-
+#-----------------------------------------------------------------------------
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
 def payment():
@@ -114,13 +120,12 @@ def payment():
 
     return render_template('payment.html', title='Payment', form=form, user=user, so=so)
 
-
+#-----------------------------------------------------------------------------
 @app.route('/change-order', methods=['GET','POST'])
 @login_required
 def change_order():
     user = db.session.get(User, current_user.get_id())
     so = Session.query.filter_by(user_id=current_user.get_id()).first()
-
 
     if user.orders == None:
         order = Order(user_id=current_user.get_id())
@@ -152,7 +157,7 @@ def change_order():
 
     return render_template('change_order.html', title='Order Updated', user=user)
 
-
+#-----------------------------------------------------------------------------
 @app.route('/create-checkout-session', methods=['GET','POST'])
 @login_required
 def create_checkout_session():
@@ -176,11 +181,16 @@ def create_checkout_session():
 
     return redirect(checkout_session.url, code=303)
 
-
+#-----------------------------------------------------------------------------
 @app.route('/success', methods=['GET'])
 @login_required
 def success():
-    session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+    session_id = request.args.get('session_id')
+    if session_id is None:
+        log_details(current_user, "Cannot find session_id in request.")
+        return redirect(url_for('index'))
+
+    session = stripe.checkout.Session.retrieve(session_id)
     user = db.session.get(User, current_user.get_id())
     so = Session.query.filter_by(user_id=current_user.get_id()).first()
 

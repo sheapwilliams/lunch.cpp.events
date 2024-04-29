@@ -1,8 +1,8 @@
 """init
 
-Revision ID: fde953f516ae
+Revision ID: 88a734e35038
 Revises: 
-Create Date: 2024-04-04 15:17:41.422406
+Create Date: 2024-04-18 11:55:20.617887
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fde953f516ae'
+revision = '88a734e35038'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_user_email'), ['email'], unique=True)
         batch_op.create_index(batch_op.f('ix_user_username'), ['username'], unique=True)
 
-    op.create_table('order',
+    op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('timestamp', sa.DateTime(), nullable=False),
     sa.Column('status', sa.String(length=256), nullable=False),
@@ -43,9 +43,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    with op.batch_alter_table('order', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_order_timestamp'), ['timestamp'], unique=False)
-        batch_op.create_index(batch_op.f('ix_order_user_id'), ['user_id'], unique=True)
+    with op.batch_alter_table('orders', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_orders_timestamp'), ['timestamp'], unique=False)
+        batch_op.create_index(batch_op.f('ix_orders_user_id'), ['user_id'], unique=True)
 
     op.create_table('session',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -74,11 +74,11 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_session_timestamp'))
 
     op.drop_table('session')
-    with op.batch_alter_table('order', schema=None) as batch_op:
-        batch_op.drop_index(batch_op.f('ix_order_user_id'))
-        batch_op.drop_index(batch_op.f('ix_order_timestamp'))
+    with op.batch_alter_table('orders', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_orders_user_id'))
+        batch_op.drop_index(batch_op.f('ix_orders_timestamp'))
 
-    op.drop_table('order')
+    op.drop_table('orders')
     with op.batch_alter_table('user', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_user_username'))
         batch_op.drop_index(batch_op.f('ix_user_email'))

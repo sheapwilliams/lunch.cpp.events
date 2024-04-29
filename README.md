@@ -98,6 +98,26 @@ This table will have one line per session - when completed data transfered to or
 | totalPaid     | int           |
 
 
+select u.username, o.monday from user u, orders o where u.id=o.user_id order by o.monday;
+
+select u.username, o.monday from user u, orders o where u.id=o.user_id order by o.monday;
+
+
+SELECT u.username, u.email, o.monday
+INTO OUTFILE '/tmp/orders.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM user u, orders o 
+WHERE u.id=o.user_id
+ORDER by o.monday
+
+sudo mysql lunch -u root -e "select u.username, o.monday from user u, orders o where u.id=o.user_id order by o.monday;" | tr '\t' ',' > data.csv
+
+select u.username, o.monday from user u, orders o where u.id=o.user_id order by o.monday;
+
+
+
 ### Notes
 https://picocss.com/docs
 

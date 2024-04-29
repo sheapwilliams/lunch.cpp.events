@@ -67,6 +67,46 @@ class Config:
                     "desc": "No Lunch Selected"
                 },
                 {
+                    "name": "Vegan Laksa Pak",
+                    "type": "V",
+                    "desc": "Steamed noodles in vegan yellow curry, mixed vegetables and fried onions."
+                },
+                {
+                    "name": "Orange Chicken Bowl",
+                    "type": "C",
+                    "desc": "Lightly battered chicken nuggest prepared in homemade sauce featuring fresh oranges with house wild rice."
+                },
+                {
+                    "name": "Beef Boat Bowl",
+                    "type": "B",
+                    "desc": "Traditional spicy thai beef noodle with bean sprouts and thai basil."
+                },
+                {
+                    "name": "Pad Thai Pork ",
+                    "type": "P",
+                    "desc": "Most popular Thai noodle dish featuring stir-fried thin rice noodle with egg, bean sprouts, scallions and crunchy peanuts."
+                },                
+                {
+                    "name": "Pepperoni",
+                    "type": "B",
+                    "desc": "Pepperoni with roasted tomato sauce & mozzarella",
+                },
+                {
+                    "name": "Margherita",
+                    "type": "V",
+                    "desc": "Roasted tomato sauce, fresh mozzarella, sliced tomatoes & sweet basil"
+                }
+            ]
+        },
+        {
+            "date": "5/1/24",
+            "options": [
+                {
+                    "name": "None",
+                    "type": "N",
+                    "desc": "No Lunch Selected"
+                },
+                {
                     "name": "Riviera",
                     "type": "V",
                     "desc": "Tomato, mozzarella, basil, organic spinach & vinaigrette dressing"
@@ -95,46 +135,6 @@ class Config:
                     "name": "Margherita",
                     "type": "V",
                     "desc": "Roasted tomato sauce, fresh mozzarella, sliced tomatoes & sweet basil"
-                }
-            ]
-        },
-        {
-            "date": "5/1/24",
-            "options": [
-                {
-                    "name": "None",
-                    "type": "N",
-                    "desc": "No Lunch Selected"
-                },
-                {
-                    "name": "Vegan Laksa Pak",
-                    "type": "V",
-                    "desc": "Steamed noodles in vegan yellow curry, mixed vegetables and fried onions."
-                },
-                {
-                    "name": "Orange Chicken Bowl",
-                    "type": "C",
-                    "desc": "Lightly battered chicken nuggest prepared in homemade sauce featuring fresh oranges with house wild rice."
-                },
-                {
-                    "name": "Beef Boat Bowl",
-                    "type": "B",
-                    "desc": "Traditional spicy thai beef noodle with bean sprouts and thai basil."
-                },
-                {
-                    "name": "Pad Thai Pork ",
-                    "type": "P",
-                    "desc": "Most popular Thai noodle dish featuring stir-fried thin rice noodle with egg, bean sprouts, scallions and crunchy peanuts."
-                },                
-                {
-                    "name": "Riviera",
-                    "type": "V",
-                    "desc": "Tomato, mozzarella, basil, organic spinach & vinaigrette dressing"
-                },
-                {
-                    "name": "Preston",
-                    "type": "P",
-                    "desc": "Roast pork loin, sauteed onions, provolone & gravy"
                 }
             ]
         },
