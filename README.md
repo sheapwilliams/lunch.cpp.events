@@ -117,7 +117,6 @@ sudo mysql lunch -u root -e "select u.username, o.monday from user u, orders o w
 select u.username, o.monday from user u, orders o where u.id=o.user_id order by o.monday;
 
 
-
 ### Notes
 https://picocss.com/docs
 
